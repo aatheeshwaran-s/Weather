@@ -55,7 +55,7 @@ export const fetchWeatherByCityService = async (
     });
   } catch (error: any) {
     if (error.response?.status === 404) {
-      return createResponse(404, "City not found", {});
+      return createResponse(404, "City is not found", {});
     }
 
     return createResponse(500, "Failed to fetch weather", {});
