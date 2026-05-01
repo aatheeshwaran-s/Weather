@@ -1,12 +1,20 @@
 import { Request, Response, NextFunction } from "express";
 
+type ErrorWithStatusCode = Error & {
+  statusCode?: number;
+};
+
 export const errorHandler = (
-  err: any,
+  err: ErrorWithStatusCode,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  res.status(err.statusCode || 500).json({
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  return res.status(err.statusCode ?? 500).json({
     message: err.message || "Server Error",
   });
 };
